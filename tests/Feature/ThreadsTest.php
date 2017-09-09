@@ -22,6 +22,9 @@ class ThreadsTest extends TestCase
         $response->assertSee($thread->title);
     }
 
+    /**
+     * @test
+     */
     public function a_user_can_view_a_single_thread() {
 
         $thread = factory(Thread::class)->create();
