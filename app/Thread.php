@@ -6,20 +6,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-
     /**
      * @return string
      */
-    public function path() {
+    public function path()
+    {
 
-        return '/threads/' . $this->id;
+        return '/threads/'.$this->id;
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function replies(){
+    public function replies()
+    {
 
         return $this->hasMany(Reply::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function creator()
+    {
+
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
