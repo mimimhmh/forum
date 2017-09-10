@@ -4,12 +4,12 @@ namespace Tests\Feature;
 
 use App\Reply;
 use App\Thread;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ReadThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     private $thread;
 
