@@ -7,13 +7,21 @@ use Illuminate\Http\Request;
 
 class ThreadsController extends Controller
 {
+    /**
+     *
+     */
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['index', 'show']);
+    }
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
 
         $threads = Thread::latest()->get();
 
@@ -25,7 +33,8 @@ class ThreadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
+    public function create()
+    {
         //
     }
 
@@ -35,8 +44,15 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        //
+    public function store(Request $request)
+    {
+        $thread = Thread::create([
+            'user_id' => auth()->id(),
+            'title' => request('title'),
+            'body' => request('body'),
+        ]);
+
+        return redirect($thread->path());
     }
 
     /**
@@ -45,7 +61,8 @@ class ThreadsController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread) {
+    public function show(Thread $thread)
+    {
 
         return view('threads.show', compact('thread'));
     }
@@ -56,7 +73,8 @@ class ThreadsController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function edit(Thread $thread) {
+    public function edit(Thread $thread)
+    {
         //
     }
 
@@ -67,7 +85,8 @@ class ThreadsController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread) {
+    public function update(Request $request, Thread $thread)
+    {
         //
     }
 
@@ -77,7 +96,8 @@ class ThreadsController extends Controller
      * @param  \App\Thread $thread
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread) {
+    public function destroy(Thread $thread)
+    {
         //
     }
 }

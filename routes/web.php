@@ -13,4 +13,6 @@ Route::get('/threads', 'ThreadsController@index');
 
 Route::get('/threads/{thread}', 'ThreadsController@show');
 
+Route::post('/threads', 'ThreadsController@store');
+
 Route::post('/threads/{thread}/replies', 'RepliesController@store');
