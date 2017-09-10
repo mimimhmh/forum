@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    protected $guarded = [];
+
     /**
      * @return string
      */
@@ -31,5 +33,13 @@ class Thread extends Model
     {
 
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+
+    public function addReply($reply)
+    {
+
+        return $this->replies()->create($reply);
+
     }
 }

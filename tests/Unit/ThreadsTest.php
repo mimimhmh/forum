@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Reply;
 use App\Thread;
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,17 +11,24 @@ use Tests\TestCase;
 
 class ThreadsTest extends TestCase
 {
-
     use DatabaseMigrations;
+
+    protected $thread;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        $this->thread = factory(Thread::class)->create();
+    }
 
     /**
      * @test
      */
-    public function a_thread_has_replies(){
+    public function a_thread_has_replies()
+    {
 
-        $thread = factory(Thread::class)->create();
-
-        $this->assertInstanceOf(Collection::class, $thread->replies);
+        $this->assertInstanceOf(Collection::class, $this->thread->replies);
     }
 
     /**
@@ -28,11 +36,24 @@ class ThreadsTest extends TestCase
      */
     public function a_thread_has_a_creator()
     {
-        $thread = factory(Thread::class)->create();
 
-        $response = $this->get('/threads/'.$thread->id);
+        $response = $this->get($this->thread->path());
 
-        $response->assertSee($thread->creator->name);
-        $this->assertInstanceOf(User::class, $thread->creator);
+        $response->assertSee($this->thread->creator->name);
+        $this->assertInstanceOf(User::class, $this->thread->creator);
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_can_add_a_reply()
+    {
+
+        $this->thread->addReply([
+            'user_id' => 1,
+            'body' => 'Foobar',
+        ]);
+
+        $this->assertCount(1, $this->thread->replies);
     }
 }
