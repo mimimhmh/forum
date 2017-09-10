@@ -33,7 +33,7 @@ class ParticipateInForumTest extends TestCase
     public function an_authenticated_user_can_participate_in_forum_threads()
     {
 
-        $this->be(create(User::class));
+        $this->signIn();
 
         $thread = create(Thread::class);
 
