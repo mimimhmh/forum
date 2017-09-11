@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Thread;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -19,14 +18,6 @@ class CreateThreadsTest extends TestCase
         $this->withExceptionHandling();
 
         $this->get('/threads/create')->assertRedirect('/login');
-    }
-
-    /**
-     * @test
-     */
-    public function guests_may_not_see_the_create_page()
-    {
-        $this->withExceptionHandling();
 
         $this->get('/threads/create')->assertRedirect('/login');
     }
