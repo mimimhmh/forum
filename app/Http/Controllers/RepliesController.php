@@ -41,11 +41,11 @@ class RepliesController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Thread $thread
+     * @param $channelId
      * @return \Illuminate\Http\Response
      */
-    public function store(Thread $thread)
+    public function store($channelId, Thread $thread)
     {
-
         $thread->addReply([
             'user_id' => auth()->id(),
             'body' => \request('body')

@@ -1,6 +1,8 @@
 <?php
 
 use Faker\Generator as Faker;
+use App\Channel;
+use App\Thread;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +20,9 @@ $factory->define(App\User::class, function (Faker $faker) {
     static $password;
 
     return [
-        'name'           => $faker->name,
-        'email'          => $faker->unique()->safeEmail,
-        'password'       => $password ?: $password = bcrypt('secret'),
+        'name' => $faker->name,
+        'email' => $faker->unique()->safeEmail,
+        'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
 });
@@ -28,17 +30,16 @@ $factory->define(App\User::class, function (Faker $faker) {
 $factory->define(App\Reply::class, function (Faker $faker) {
 
     return [
-        'user_id'   => function () {
+        'user_id' => function () {
 
-            return factory('App\User')->create()->id;
+            return factory(App\User::class)->create()->id;
         },
         'thread_id' => function () {
 
-            return factory('App\Thread')->create()->id;
+            return factory(Thread::class)->create()->id;
         },
-        'body'      => $faker->paragraph()
+        'body' => $faker->paragraph(),
     ];
-
 });
 
 $factory->define(App\Thread::class, function (Faker $faker) {
@@ -46,12 +47,25 @@ $factory->define(App\Thread::class, function (Faker $faker) {
     return [
         'user_id' => function () {
 
-            return factory('App\User')->create()->id;
+            return factory(App\User::class)->create()->id;
         },
-        'title'   => $faker->sentence(),
-        'body'    => $faker->paragraph()
-    ];
 
+        'channel_id' => function () {
+            return factory(Channel::class)->create()->id;
+        },
+
+        'title' => $faker->sentence(),
+        'body' => $faker->paragraph(),
+    ];
 });
 
+$factory->define(App\Channel::class, function (Faker $faker) {
+
+    $name = $faker->word;
+
+    return [
+        'name' => $name,
+        'slug' => $name,
+    ];
+});
 
