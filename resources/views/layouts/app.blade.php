@@ -45,7 +45,7 @@
                                 Channels <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                @foreach(App\Channel::all() as $channel)
+                                @foreach($channels as $channel)
                                     <li>
                                         <a class="dropdown-item" href="/threads/{{ $channel->slug }}">
                                             {{ $channel->name }}
@@ -69,6 +69,12 @@
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="/threads/create">
+                                            New Thread
+                                        </a>
+
+                                    </li>
                                     <li>
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
