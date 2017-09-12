@@ -130,7 +130,7 @@ class ThreadsController extends Controller
             $threads->where('channel_id', $channel->id);
         }
 
-        $threads = $threads->paginate(1);
+        $threads = $threads->paginate(10);
 
         return $threads;
     }
