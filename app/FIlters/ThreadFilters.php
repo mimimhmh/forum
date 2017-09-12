@@ -6,7 +6,11 @@ use App\User;
 
 class ThreadFilters extends Filters
 {
+    protected $filters = ['by'];
+
     /**
+     * Filter the query by username
+     *
      * @param $username
      * @return mixed
      */
