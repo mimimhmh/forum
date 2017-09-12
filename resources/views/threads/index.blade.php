@@ -23,6 +23,7 @@
                         @endforeach
                     </div>
                 </div>
+                {{ $threads->appends(request()->query())->links() }}
             </div>
         </div>
     </div>
