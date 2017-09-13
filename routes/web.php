@@ -20,3 +20,5 @@ Route::get('threads/{channel?}', 'ThreadsController@index')->name('threads.index
 Route::post('/threads/{channel}/{thread}/replies', 'RepliesController@store');
 
 Route::post('/replies/{reply}/favorites', 'FavoritesController@store');
+
+Route::get('/replies/{reply}/favorites', 'FavoritesController@loginRedirect');

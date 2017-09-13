@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Favorite;
 use App\Reply;
+use App\Thread;
 
 /**
  * Class FavoritesController
@@ -29,5 +29,18 @@ class FavoritesController extends Controller
         $reply->like();
 
         return back();
+    }
+
+    /**
+     * @param \App\Reply $reply
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function loginRedirect(Reply $reply)
+    {
+
+        $thread = Thread::where('id', $reply->thread_id)->firstOrFail();
+
+        return redirect('threads/'.$thread->channel->slug.'/'.$thread->id);
+
     }
 }
