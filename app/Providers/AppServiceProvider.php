@@ -15,7 +15,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('*', function ($view) {
-            $view->with('channels', Channel::all());
+            $channels = \Cache::remember('channels', 60 * 60, function () {
+                return Channel::all();
+            });
+
+            $view->with('channels', $channels);
         });
     }
 
@@ -26,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
+        $this->app->register(\Barryvdh\Debugbar\ServiceProvider::class);
     }
 }

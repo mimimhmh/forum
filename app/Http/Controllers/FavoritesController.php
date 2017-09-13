@@ -22,10 +22,12 @@ class FavoritesController extends Controller
 
     /**
      * @param \App\Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Reply $reply)
     {
         $reply->like();
 
+        return back();
     }
 }

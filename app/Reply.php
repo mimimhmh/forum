@@ -50,8 +50,16 @@ class Reply extends Model
     {
         $attr = ['user_id' => auth()->id()];
         //prevent favorite twice
-        if ( ! $this->favorites()->where($attr)->exists()) {
+        if (! $this->favorites()->where($attr)->exists()) {
             $this->favorites()->create(['user_id' => auth()->id()]);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFavorited()
+    {
+        return $this->favorites()->where('user_id', auth()->id())->exists();
     }
 }
