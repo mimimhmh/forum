@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Favorite;
 use App\Reply;
 use App\Thread;
 
@@ -27,6 +28,20 @@ class FavoritesController extends Controller
     public function store(Reply $reply)
     {
         $reply->like();
+
+        return back();
+    }
+
+    /**
+     * @param \App\Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function destroy(Reply $reply)
+    {
+        $favorite = $reply->favorites()->where('user_id', auth()->id())
+                                        ->firstOrFail();
+
+        $favorite->delete();
 
         return back();
     }
