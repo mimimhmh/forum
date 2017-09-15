@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Favorable;
 
 /**
  * App\Reply
@@ -24,7 +25,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Reply extends Model
 {
+    use Favorable;
+
     protected $guarded = [];
+
+    protected $with = ['owner', 'favorites'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -33,33 +38,5 @@ class Reply extends Model
     {
 
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function favorites()
-    {
-        return $this->morphMany(Favorite::class, 'favorited');
-    }
-
-    /**
-     *
-     */
-    public function like()
-    {
-        $attr = ['user_id' => auth()->id()];
-        //prevent favorite twice
-        if (! $this->favorites()->where($attr)->exists()) {
-            $this->favorites()->create(['user_id' => auth()->id()]);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public function isFavorited()
-    {
-        return $this->favorites()->where('user_id', auth()->id())->exists();
     }
 }
