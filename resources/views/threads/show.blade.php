@@ -6,11 +6,22 @@
             <div class="col-md-8">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="{{ route('profiles', $thread->creator) }}">
-                            {{ $thread->creator->name }}
-                        </a>
-                            Posted:
-                        <strong>{{ $thread->title }}</strong>
+                        <div class="level">
+                            <span class="flex">
+                                <a href="{{ route('profiles', $thread->creator) }}">
+                                    {{ $thread->creator->name }}
+                                </a>
+                                Posted:
+                                <strong>{{ $thread->title }}</strong>
+                            </span>
+
+                            <form action="{{ $thread->path() }}" method="post">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <button type="submit" class="btn btn-link">Delete Thread</button>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="panel-body">
@@ -33,7 +44,7 @@
                                   rows="5"
                                   placeholder="Have something to say?">
                 </textarea>
-                        <br />
+                        <br/>
                         <button type="submit" class="btn btn-default">Post</button>
                     </form>
                 @else
@@ -50,7 +61,7 @@
 
                     <div class="panel-body">
                         <p>
-                            This thread was published {{ $thread->created_at->diffForHumans() }}<br />
+                            This thread was published {{ $thread->created_at->diffForHumans() }}<br/>
                             by
                             <a href="#">{{ $thread->creator->name }}</a>, and currently has
                             {{ $thread->replies_count }} {{ str_plural('comment', $thread->replies_count) }}.

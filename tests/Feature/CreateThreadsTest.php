@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Channel;
+use App\Reply;
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -46,9 +47,7 @@ class CreateThreadsTest extends TestCase
     public function a_thread_requires_a_title()
     {
 
-        $this->publishThread(['title' => null])
-            ->assertSessionHasErrors('title');
-
+        $this->publishThread(['title' => null])->assertSessionHasErrors('title');
     }
 
     /**
@@ -57,9 +56,7 @@ class CreateThreadsTest extends TestCase
     public function a_thread_requires_a_body()
     {
 
-        $this->publishThread(['body' => null])
-            ->assertSessionHasErrors('body');
-
+        $this->publishThread(['body' => null])->assertSessionHasErrors('body');
     }
 
     /**
@@ -70,12 +67,27 @@ class CreateThreadsTest extends TestCase
 
         factory(Channel::class, 2)->create();
 
-        $this->publishThread(['channel_id' => null])
-            ->assertSessionHasErrors('channel_id');
+        $this->publishThread(['channel_id' => null])->assertSessionHasErrors('channel_id');
 
         //a channel that doesn't exist.
-        $this->publishThread(['channel_id' => 999])
-            ->assertSessionHasErrors('channel_id');
+        $this->publishThread(['channel_id' => 999])->assertSessionHasErrors('channel_id');
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_can_be_deleted()
+    {
+        $this->signIn();
+
+        $thread = create(Thread::class);
+
+        $reply = create(Reply::class, ['thread_id' => $thread->id]);
+
+        $this->json('DELETE', $thread->path());
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
 
     }
 

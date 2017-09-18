@@ -13,6 +13,8 @@ Route::resource('threads', 'ThreadsController', ['except' => ['index', 'show']])
 
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 
+Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
+
 Route::get('threads/{channel?}', 'ThreadsController@index')->name('threads.index');
 
 //Route::resource('threads', 'ThreadController');

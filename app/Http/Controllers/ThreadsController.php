@@ -77,10 +77,10 @@ class ThreadsController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Thread $thread
-     * @param  $channelId
+     * @param  $channel
      * @return \Illuminate\Http\Response
      */
-    public function show($channelId, Thread $thread)
+    public function show(Channel $channel, Thread $thread)
     {
 
         $replies = $thread->replies()->paginate(5);
@@ -115,11 +115,15 @@ class ThreadsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Thread $thread
+     * @param \App\Channel $channel
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Thread $thread)
+    public function destroy(Channel $channel, Thread $thread)
     {
-        //
+
+        $thread->delete();
+
+        return redirect('/threads');
     }
 
     /**
