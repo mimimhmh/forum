@@ -19,11 +19,13 @@
                         <div class="panel-heading">
                             <div class="level">
                         <span class="flex">
-                            <a href="#">
+                            <a href="{{ route('profiles', $thread->creator) }}">
                                 {{ $thread->creator->name }}
                             </a>
                             Posted:
-                            <strong>{{ $thread->title }}</strong>
+                            <a href="{{ $thread->path() }}">
+                                <strong>{{ $thread->title }}</strong>
+                            </a>
                         </span>
 
                                 <span>
