@@ -55,7 +55,7 @@ class RepliesController extends Controller
             'body' => $data['body']
         ]);
 
-        return back();
+        return back()->with('flash', 'Replied successfully!');
     }
 
     /**
