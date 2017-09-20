@@ -11,9 +11,23 @@ trait RecordsActivity
      */
     protected static function bootRecordsActivity()
     {
-        static:: created(function ($thread) {
-            $thread->recordActivity('created');
-        });
+        if (auth()->guest()) {
+            return;
+        }
+
+        foreach (static::getActivitiesToRecord() as $event) {
+            static:: $event(function ($model) use ($event) {
+                $model->recordActivity($event);
+            });
+        }
+    }
+
+    /**
+     * @return array
+     */
+    protected static function getActivitiesToRecord()
+    {
+        return ['created'];
     }
 
     /**
@@ -21,12 +35,18 @@ trait RecordsActivity
      */
     protected function recordActivity($event)
     {
-        Activity::create([
+        $this->activity()->create([
             'user_id' => auth()->id(),
             'type' => $this->getActivityType($event),
-            'subject_id' => $this->id,
-            'subject_type' => get_class($this),
         ]);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function activity()
+    {
+        return $this->morphMany(Activity::class, 'subject');
     }
 
     /**
@@ -35,6 +55,8 @@ trait RecordsActivity
      */
     protected function getActivityType($event)
     {
-        return $event.'_'.strtolower((new \ReflectionClass($this))->getShortName());
+        $type = strtolower((new \ReflectionClass($this))->getShortName());
+
+        return "{$event}_{$type}";
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Favorable;
 
@@ -25,7 +26,7 @@ use App\Traits\Favorable;
  */
 class Reply extends Model
 {
-    use Favorable;
+    use Favorable, RecordsActivity;
 
     protected $guarded = [];
 
@@ -38,5 +39,13 @@ class Reply extends Model
     {
 
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function thread()
+    {
+        return $this->belongsTo(Thread::class);
     }
 }
