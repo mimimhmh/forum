@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Activity;
 use App\Reply;
 use App\Thread;
+use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -43,5 +44,27 @@ class ActivityTest extends TestCase
         $reply = create(Reply::class);
 
         $this->assertEquals(2, Activity::count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_fetches_a_feed_for_any_user()
+    {
+        $this->signIn();
+
+        create(Thread::class, ['user_id' => auth()->id()]);
+
+        Carbon::setTestNow(Carbon::now()->subWeek());
+
+        create(Thread::class, ['user_id' => auth()->id()]);
+
+        $feed = Activity::feed(auth()->user());
+
+        $this->assertTrue($feed->keys()->contains(Carbon::now()->format('Y-m-d')));
+
+        Carbon::setTestNow(null);
+
+        $this->assertTrue($feed->keys()->contains(Carbon::now()->subWeek()->format('Y-m-d')));
     }
 }
