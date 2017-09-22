@@ -66,7 +66,11 @@ class RepliesController extends Controller
      */
     public function update(Reply $reply)
     {
-        $reply->update(['body' => request('body')]  );
+        $this->authorize('update', $reply);
+
+        $this->validate(request(), ['body' => 'required']);
+
+        $reply->update(request(['body']));
 
         if (request()->expectsJson()) {
             return response(['status' => 'Reply updated!']);
