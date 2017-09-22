@@ -18,8 +18,7 @@ class ParticipateInForumTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $this->post('/threads/some-channel/1/replies', [])
-            ->assertRedirect('/login');
+        $this->post('/threads/some-channel/1/replies', [])->assertRedirect('/login');
     }
 
     /**
@@ -42,7 +41,8 @@ class ParticipateInForumTest extends TestCase
     /**
      * @test
      */
-    public function a_reply_requires_body(){
+    public function a_reply_requires_body()
+    {
 
         $this->withExceptionHandling()->signIn();
 
@@ -50,8 +50,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make(Reply::class, ['body' => null]);
 
-        $this->post($thread->path().'/replies', $reply->toArray())
-             ->assertSessionHasErrors('body');
+        $this->post($thread->path().'/replies', $reply->toArray())->assertSessionHasErrors('body');
     }
 
     /**
@@ -66,5 +65,38 @@ class ParticipateInForumTest extends TestCase
         $this->delete("/replies/{$reply->id}")->assertStatus(302);
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /**
+     * @test
+     */
+    public function unauthenticated_user_can_not_update_reply()
+    {
+
+        $this->withExceptionHandling();
+
+        $reply = create(Reply::class);
+
+        $updatedWords = "you haven been changed";
+
+        $this->patch("/replies/{$reply->id}", ['body' => $updatedWords])->assertRedirect("/login");
+    }
+
+    /**
+     * @test
+     */
+    public function an_authenticated_user_can_update_reply()
+    {
+        $this->signIn();
+
+        $reply = create(Reply::class, ['user_id' => auth()->id()]);
+
+        $updatedWords = "you haven been changed";
+
+        $response = $this->patch("/replies/{$reply->id}", ['body' => $updatedWords]);
+
+        $response->assertStatus(302);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedWords]);
     }
 }

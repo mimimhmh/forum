@@ -46,50 +46,33 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
-        $data =  request()->validate([
-            'body' => 'required'
+        $data = request()->validate([
+            'body' => 'required',
         ]);
 
         $thread->addReply([
             'user_id' => auth()->id(),
-            'body' => $data['body']
+            'body' => $data['body'],
         ]);
 
         return back()->with('flash', 'Replied successfully!');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Reply $reply
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Reply $reply)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Reply $reply
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Reply $reply)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
      * @param  \App\Reply $reply
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Reply $reply)
+    public function update(Reply $reply)
     {
-        //
+        $reply->update(['body' => request('body')]  );
+
+        if (request()->expectsJson()) {
+            return response(['status' => 'Reply updated!']);
+        }
+
+        return back();
     }
 
     /**
@@ -104,6 +87,10 @@ class RepliesController extends Controller
 
         $reply->delete();
 
-        return back();
+        if (\request()->expectsJson()) {
+            return response(['status' => 'Reply deleted']);
+        }
+
+        return back()->with('flash', 'Reply deleted');
     }
 }
