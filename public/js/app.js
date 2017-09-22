@@ -42439,7 +42439,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         update: function update() {
             //only POST method can work correctly
-            //                axios.post('/replies/' + this.attributes.id, {
+            //                axios.patch('/replies/' + this.attributes.id, {
             //                    body: this.body
             //                }).then(() => {
             //                    this.previousBody = this.body;
@@ -42448,6 +42448,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //                }).catch((error)=>{
             //                    console.log(error.response.data)
             //                });
+            if ($.trim(this.body) === "") {
+                alert("Reply should have body.");
+                return;
+            }
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

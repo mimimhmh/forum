@@ -30,7 +30,7 @@
             <div v-if="editing">
 
                 <div class="form-group">
-                    <textarea class="form-control" name="body" v-model="body"></textarea>
+                    <textarea class="form-control" name="body" v-model="body" required></textarea>
                 </div>
 
                 <button class="btn btn-primary btn-xs" @click="update">Update</button>
