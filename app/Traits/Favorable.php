@@ -15,13 +15,24 @@ trait Favorable
     /**
      *
      */
-    public function like()
+    public function favorite()
     {
         $attr = ['user_id' => auth()->id()];
         //prevent favorite twice
         if (! $this->favorites()->where($attr)->exists()) {
             $this->favorites()->create(['user_id' => auth()->id()]);
         }
+    }
+
+    /**
+     *
+     */
+    public function unfavorite()
+    {
+        $favorite = $this->favorites()->where('user_id', auth()->id())
+            ->firstOrFail();
+
+        $favorite->delete();
     }
 
     /**
@@ -38,5 +49,14 @@ trait Favorable
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    /**
+     * @return bool
+     */
+    public function getIsFavoritedAttribute()
+    {
+
+        return $this->isFavorited();
     }
 }

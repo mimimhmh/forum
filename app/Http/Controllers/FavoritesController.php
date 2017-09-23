@@ -23,27 +23,20 @@ class FavoritesController extends Controller
 
     /**
      * @param \App\Reply $reply
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Reply $reply)
     {
-        $reply->like();
-
-        return back();
+        $reply->favorite();
     }
 
     /**
      * @param \App\Reply $reply
-     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Reply $reply)
     {
-        $favorite = $reply->favorites()->where('user_id', auth()->id())
-                                        ->firstOrFail();
 
-        $favorite->delete();
+        $reply->unfavorite();
 
-        return back();
     }
 
     /**
