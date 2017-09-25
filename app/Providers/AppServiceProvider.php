@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer('*', function ($view) {
-            $channels = \Cache::remember('channels', 5, function () {
+            $channels = \Cache::remember('channels', 1, function () {
                 \Cache::flush();
                 return Channel::all();
             });

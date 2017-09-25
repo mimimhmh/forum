@@ -4,18 +4,18 @@
             <reply :data="reply" @deleted="remove(index)"></reply>
         </div>
 
-        <!--<new-reply :endpoint="endpoint" @created="add"></new-reply>-->
+        <new-reply :endpoint="endpoint" @created="addData"></new-reply>
     </div>
 </template>
 
 <script>
     import Reply from './Reply.vue';
-//    import NewReply from './NewReply.vue';
+    import NewReply from './NewReply.vue';
 
     export default {
         props: ['data'],
 
-        components: { Reply },
+        components: { Reply, NewReply },
 
         data() {
             return {
@@ -25,7 +25,7 @@
         },
 
         methods: {
-            add(reply) {
+            addData(reply) {
                 this.items.push(reply);
 
                 this.$emit('added');
