@@ -44,6 +44,13 @@ if (token) {
  */
 window.Vue = require('vue');
 
+Vue.prototype.authorize = function (handler) {
+    // Additional admin privileges here.
+    let user = window.App.user;
+
+    return user ? handler(user) : false;
+};
+
 window.events = new Vue();
 //
 

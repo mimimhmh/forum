@@ -5,6 +5,16 @@ namespace App\Traits;
 trait Favorable
 {
     /**
+     * Boot the trait
+     */
+    protected static function bootFavoritable()
+    {
+        static::deleting(function ($model) {
+            $model->favorites->each->delete();
+        });
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function favorites()
@@ -25,14 +35,13 @@ trait Favorable
     }
 
     /**
-     *
+     * Unfavorite the current reply.
      */
     public function unfavorite()
     {
-        $favorite = $this->favorites()->where('user_id', auth()->id())
-            ->firstOrFail();
+        $attributes = ['user_id' => auth()->id()];
 
-        $favorite->delete();
+        $this->favorites()->where($attributes)->get()->each->delete();
     }
 
     /**
