@@ -46,23 +46,23 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
-        $data = request()->validate([
-            'body' => 'required',
+        $this->validate(request(), ['body' => 'required']);
+
+        $reply = $thread->addReply([
+            'body' => request('body'),
+            'user_id' => auth()->id()
         ]);
 
-        $thread->addReply([
-            'user_id' => auth()->id(),
-            'body' => $data['body'],
-        ]);
-
-        return back()->with('flash', 'Replied successfully!');
+        if (request()->expectsJson()) {
+            return $reply->load('owner');
+        }
+        return back()->with('flash', 'Your reply has been left.');
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \App\Reply $reply
-     * @return \Illuminate\Http\Response
      */
     public function update(Reply $reply)
     {
@@ -72,11 +72,6 @@ class RepliesController extends Controller
 
         $reply->update(request(['body']));
 
-        if (request()->expectsJson()) {
-            return response(['status' => 'Reply updated!']);
-        }
-
-        return back();
     }
 
     /**
