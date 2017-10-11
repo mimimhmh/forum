@@ -45,7 +45,6 @@ class ReadThreadsTest extends TestCase
         $response->assertSee($this->thread->title);
     }
 
-
     /**
      * @test
      */
@@ -106,12 +105,26 @@ class ReadThreadsTest extends TestCase
     /**
      * @test
      */
+    public function a_user_can_filter_threads_by_those_that_are_unanswered()
+    {
+        $thread = create(Thread::class);
+
+        create('App\Reply', ['thread_id' => $thread->id]);
+
+        $response = $this->getJson('threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response['data']);
+    }
+
+    /**
+     * @test
+     */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
         $thread = create('App\Thread');
         create(Reply::class, ['thread_id' => $thread->id]);
 
-        $response = $this->getJson($thread->path(). '/replies')->json();
+        $response = $this->getJson($thread->path().'/replies')->json();
 
         $this->assertCount(1, $response['data']);
     }
