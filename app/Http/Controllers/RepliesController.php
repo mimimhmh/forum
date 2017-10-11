@@ -18,13 +18,13 @@ class RepliesController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param $channelId
+     * @param \App\Thread $thread
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function index()
+    public function index($channelId, Thread $thread)
     {
-        //
+        return $thread->replies()->paginate(5);
     }
 
     /**

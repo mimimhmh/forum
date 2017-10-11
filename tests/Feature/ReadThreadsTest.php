@@ -72,12 +72,11 @@ class ReadThreadsTest extends TestCase
 
         $threadNotInChannel = create(Thread::class);
 
-        $response = $this->get('/threads/' . $channel->slug);
+        $response = $this->get('/threads/'.$channel->slug);
 
-        $response ->assertSee($threadInChannel->title);
+        $response->assertSee($threadInChannel->title);
 
-        $response ->assertDontSee($threadNotInChannel->title);
-
+        $response->assertDontSee($threadNotInChannel->title);
     }
 
     /**
@@ -93,9 +92,9 @@ class ReadThreadsTest extends TestCase
 
         $response = $this->get('/threads?by=JohnDoe');
 
-        $response ->assertSee($threadByJohn->title);
+        $response->assertSee($threadByJohn->title);
 
-        $response ->assertDontSee($threadNotByJohn->title);
+        $response->assertDontSee($threadNotByJohn->title);
     }
 
     /**
@@ -104,10 +103,10 @@ class ReadThreadsTest extends TestCase
     public function a_user_can_filter_threads_by_popularity()
     {
         $threadWithTwoReplies = create(Thread::class);
-        create(Reply::class, ['thread_id'=> $threadWithTwoReplies->id], 2);
+        create(Reply::class, ['thread_id' => $threadWithTwoReplies->id], 2);
 
         $threadWithThreeReplies = create(Thread::class);
-        create(Reply::class, ['thread_id'=> $threadWithThreeReplies->id], 3);
+        create(Reply::class, ['thread_id' => $threadWithThreeReplies->id], 3);
 
         $threadWithZeroReply = $this->thread;
 
@@ -116,7 +115,18 @@ class ReadThreadsTest extends TestCase
         //dd(array_column($response['data'], 'replies_count'));
 
         $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
+    }
 
+    /**
+     * @test
+     */
+    public function a_user_can_request_all_replies_for_a_given_thread()
+    {
+        $thread = create('App\Thread');
+        create(Reply::class, ['thread_id' => $thread->id]);
 
+        $response = $this->getJson($thread->path(). '/replies')->json();
+
+        $this->assertCount(1, $response['data']);
     }
 }
