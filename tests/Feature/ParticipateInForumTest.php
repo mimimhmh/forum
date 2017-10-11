@@ -35,7 +35,7 @@ class ParticipateInForumTest extends TestCase
 
         $this->post($thread->path().'/replies', $reply->toArray());
 
-        $this->get($thread->path())->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /**
@@ -95,7 +95,7 @@ class ParticipateInForumTest extends TestCase
 
         $response = $this->patch("/replies/{$reply->id}", ['body' => $updatedWords]);
 
-        $response->assertStatus(302);
+        $response->assertStatus(200);
 
         $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $updatedWords]);
     }

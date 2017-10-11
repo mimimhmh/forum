@@ -1896,7 +1896,7 @@ function loadLocale(name) {
             module && module.exports) {
         try {
             oldLocale = globalLocale._abbr;
-            __webpack_require__(172)("./" + name);
+            __webpack_require__(175)("./" + name);
             // because defineLocale currently also sets the global locale, we
             // want to undo that for lazy loaded locales
             getSetGlobalLocale(oldLocale);
@@ -16751,7 +16751,7 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(129);
-module.exports = __webpack_require__(178);
+module.exports = __webpack_require__(182);
 
 
 /***/ }),
@@ -16775,9 +16775,9 @@ __webpack_require__(130);
 
 Vue.component('flash', __webpack_require__(155));
 
-Vue.component('paginator', __webpack_require__(193));
+Vue.component('paginator', __webpack_require__(161));
 
-Vue.component('thread-view', __webpack_require__(161));
+Vue.component('thread-view', __webpack_require__(164));
 
 //
 var app = new Vue({
@@ -58052,6 +58052,226 @@ var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(162)
 /* template */
+var __vue_template__ = __webpack_require__(163)
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Paginator.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Paginator.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-608f05d0", Component.options)
+  } else {
+    hotAPI.reload("data-v-608f05d0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 162 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['dataSet'],
+
+    watch: {
+        dataSet: function dataSet() {
+            this.page = this.dataSet.current_page;
+            this.prevUrl = this.dataSet.prev_page_url;
+            this.nextUrl = this.dataSet.next_page_url;
+        },
+        page: function page() {
+            this.broadcast().updateUrl();
+        }
+    },
+
+    data: function data() {
+        return {
+            page: 1,
+            prevUrl: false,
+            nextUrl: false
+        };
+    },
+
+
+    computed: {
+        shouldPaginate: function shouldPaginate() {
+            return !!this.prevUrl || !!this.nextUrl;
+        }
+    },
+
+    methods: {
+        broadcast: function broadcast() {
+            return this.$emit('changed', this.page);
+        },
+        updateUrl: function updateUrl() {
+            history.pushState(null, null, '?page=' + this.page);
+        }
+    }
+});
+
+/***/ }),
+/* 163 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _vm.shouldPaginate
+    ? _c(
+        "ul",
+        { staticClass: "pagination pagination-sm" },
+        [
+          _c(
+            "li",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.prevUrl,
+                  expression: "prevUrl"
+                }
+              ],
+              staticClass: "page-item"
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#", "aria-label": "Previous", rel: "prev" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.page--
+                    }
+                  }
+                },
+                [_vm._v("\n            Previous\n        ")]
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _vm._l(_vm.dataSet.last_page, function(n) {
+            return _c("li", { staticClass: "page-item" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      _vm.page = n
+                    }
+                  }
+                },
+                [_vm._v(_vm._s(n))]
+              )
+            ])
+          }),
+          _vm._v(" "),
+          _c(
+            "li",
+            {
+              directives: [
+                {
+                  name: "show",
+                  rawName: "v-show",
+                  value: _vm.nextUrl,
+                  expression: "nextUrl"
+                }
+              ],
+              staticClass: "page-item",
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  _vm.page++
+                }
+              }
+            },
+            [
+              _c(
+                "a",
+                {
+                  staticClass: "page-link",
+                  attrs: { href: "#", "aria-label": "Next", rel: "next" }
+                },
+                [_vm._v("Next")]
+              )
+            ]
+          )
+        ],
+        2
+      )
+    : _vm._e()
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-608f05d0", module.exports)
+  }
+}
+
+/***/ }),
+/* 164 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(165)
+/* template */
 var __vue_template__ = null
 /* styles */
 var __vue_styles__ = null
@@ -58089,12 +58309,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 162 */
+/* 165 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue__ = __webpack_require__(163);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_Replies_vue__);
 
 
@@ -58112,15 +58332,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 163 */
+/* 166 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(164)
+var __vue_script__ = __webpack_require__(167)
 /* template */
-var __vue_template__ = __webpack_require__(177)
+var __vue_template__ = __webpack_require__(181)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -58158,16 +58378,16 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 164 */
+/* 167 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Reply_vue__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Reply_vue__ = __webpack_require__(168);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Reply_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Reply_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NewReply_vue__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NewReply_vue__ = __webpack_require__(177);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__NewReply_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__NewReply_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_Collection__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mixins_Collection__ = __webpack_require__(180);
 //
 //
 //
@@ -58218,20 +58438,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.dataSet = data;
             this.items = data.data;
+
+            window.scrollTo(0, 0);
         }
     }
 });
 
 /***/ }),
-/* 165 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(166)
+var __vue_script__ = __webpack_require__(169)
 /* template */
-var __vue_template__ = __webpack_require__(173)
+var __vue_template__ = __webpack_require__(176)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -58269,12 +58491,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 166 */
+/* 169 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Favorite_vue__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Favorite_vue__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Favorite_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Favorite_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
@@ -58367,19 +58589,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 167 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(168)
+  __webpack_require__(171)
 }
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(170)
+var __vue_script__ = __webpack_require__(173)
 /* template */
-var __vue_template__ = __webpack_require__(171)
+var __vue_template__ = __webpack_require__(174)
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
@@ -58417,13 +58639,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 168 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(169);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -58443,7 +58665,7 @@ if(false) {
 }
 
 /***/ }),
-/* 169 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(11)(undefined);
@@ -58457,7 +58679,7 @@ exports.push([module.i, "\n.like-button {\n    cursor: pointer;\n}\n.like-button
 
 
 /***/ }),
-/* 170 */
+/* 173 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -58508,7 +58730,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 171 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58539,7 +58761,7 @@ if (false) {
 }
 
 /***/ }),
-/* 172 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -58788,10 +59010,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 172;
+webpackContext.id = 175;
 
 /***/ }),
-/* 173 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -58909,15 +59131,15 @@ if (false) {
 }
 
 /***/ }),
-/* 174 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(175)
+var __vue_script__ = __webpack_require__(178)
 /* template */
-var __vue_template__ = __webpack_require__(176)
+var __vue_template__ = __webpack_require__(179)
 /* styles */
 var __vue_styles__ = null
 /* scopeId */
@@ -58955,7 +59177,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 175 */
+/* 178 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -59018,7 +59240,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 176 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59082,7 +59304,34 @@ if (false) {
 }
 
 /***/ }),
-/* 177 */
+/* 180 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony default export */ __webpack_exports__["a"] = ({
+    data: function data() {
+        return {
+            items: []
+        };
+    },
+
+
+    methods: {
+        addData: function addData(item) {
+            this.items.push(item);
+
+            this.$emit('added');
+        },
+        remove: function remove(index) {
+            this.items.splice(index, 1);
+
+            this.$emit('removed');
+        }
+    }
+});
+
+/***/ }),
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -59134,270 +59383,10 @@ if (false) {
 }
 
 /***/ }),
-/* 178 */
+/* 182 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 179 */,
-/* 180 */,
-/* 181 */,
-/* 182 */,
-/* 183 */,
-/* 184 */,
-/* 185 */,
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony default export */ __webpack_exports__["a"] = ({
-    data: function data() {
-        return {
-            items: []
-        };
-    },
-
-
-    methods: {
-        addData: function addData(item) {
-            this.items.push(item);
-
-            this.$emit('added');
-        },
-        remove: function remove(index) {
-            this.items.splice(index, 1);
-
-            this.$emit('removed');
-        }
-    }
-});
-
-/***/ }),
-/* 193 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(2)
-/* script */
-var __vue_script__ = __webpack_require__(194)
-/* template */
-var __vue_template__ = __webpack_require__(195)
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources\\assets\\js\\components\\Paginator.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] Paginator.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-608f05d0", Component.options)
-  } else {
-    hotAPI.reload("data-v-608f05d0", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 194 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['dataSet'],
-
-    watch: {
-        dataSet: function dataSet() {
-            this.page = this.dataSet.current_page;
-            this.prevUrl = this.dataSet.prev_page_url;
-            this.nextUrl = this.dataSet.next_page_url;
-        },
-        page: function page() {
-            this.broadcast().updateUrl();
-        }
-    },
-
-    data: function data() {
-        return {
-            page: 1,
-            prevUrl: false,
-            nextUrl: false
-        };
-    },
-
-
-    computed: {
-        shouldPaginate: function shouldPaginate() {
-            return !!this.prevUrl || !!this.nextUrl;
-        }
-    },
-
-    methods: {
-        broadcast: function broadcast() {
-            return this.$emit('changed', this.page);
-        },
-        updateUrl: function updateUrl() {
-            history.pushState(null, null, '?page=' + this.page);
-        }
-    }
-});
-
-/***/ }),
-/* 195 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _vm.shouldPaginate
-    ? _c(
-        "ul",
-        { staticClass: "pagination pagination-sm" },
-        [
-          _c(
-            "li",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.prevUrl,
-                  expression: "prevUrl"
-                }
-              ],
-              staticClass: "page-item"
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#", "aria-label": "Previous", rel: "prev" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.page--
-                    }
-                  }
-                },
-                [_vm._v("\n            Previous\n        ")]
-              )
-            ]
-          ),
-          _vm._v(" "),
-          _vm._l(_vm.dataSet.last_page, function(n) {
-            return _c("li", { staticClass: "page-item" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      _vm.page = n
-                    }
-                  }
-                },
-                [_vm._v(_vm._s(n))]
-              )
-            ])
-          }),
-          _vm._v(" "),
-          _c(
-            "li",
-            {
-              directives: [
-                {
-                  name: "show",
-                  rawName: "v-show",
-                  value: _vm.nextUrl,
-                  expression: "nextUrl"
-                }
-              ],
-              staticClass: "page-item",
-              on: {
-                click: function($event) {
-                  $event.preventDefault()
-                  _vm.page++
-                }
-              }
-            },
-            [
-              _c(
-                "a",
-                {
-                  staticClass: "page-link",
-                  attrs: { href: "#", "aria-label": "Next", rel: "next" }
-                },
-                [_vm._v("Next")]
-              )
-            ]
-          )
-        ],
-        2
-      )
-    : _vm._e()
-}
-var staticRenderFns = []
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-608f05d0", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

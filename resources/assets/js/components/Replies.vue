@@ -4,7 +4,7 @@
             <reply :data="reply" @deleted="remove(index)"></reply>
         </div>
 
-            <paginator :dataSet="dataSet" @changed="fetch"></paginator>
+        <paginator :dataSet="dataSet" @changed="fetch"></paginator>
 
         <new-reply :endpoint="endpoint" @created="addData"></new-reply>
     </div>
@@ -38,7 +38,7 @@
             },
 
             url(page) {
-                if (! page) {
+                if (!page) {
                     let query = location.search.match(/page=(\d+)/);
 
                     page = query ? query[1] : 1;
@@ -49,6 +49,8 @@
             refresh({data}) {
                 this.dataSet = data;
                 this.items = data.data;
+
+                window.scrollTo(0, 0);
             }
         }
     }
