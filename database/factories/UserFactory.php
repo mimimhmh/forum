@@ -72,8 +72,21 @@ $factory->define(App\Channel::class, function (Faker $faker) {
 $factory->define(App\Activity::class, function (Faker $faker) {
 
     return [
-        'user_id' => rand(1,51),
-        ''
+        'user_id' => rand(1, 51),
+        '',
+    ];
+});
+
+$factory->define(\Illuminate\Notifications\DatabaseNotification::class, function (Faker $faker) {
+
+    return [
+        'id' => \Ramsey\Uuid\Uuid::uuid4()->toString(),
+        'type' => 'App\Notifications\ThreadWasUpdated',
+        'notifiable_id' => function () {
+            return auth()->id() ?: factory(\App\User::class)->create()->id;
+        },
+        'notifiable_type' => 'App\User',
+        'data' => ['foo' => 'bar'],
     ];
 });
 

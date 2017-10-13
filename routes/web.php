@@ -37,6 +37,10 @@ Route::get('/replies/{reply}/favorites', 'FavoritesController@loginRedirect');
 
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
 
+Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
+
+Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
+
 
 
 
