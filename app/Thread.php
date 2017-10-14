@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\ThreadHasNewReply;
 use App\Notifications\ThreadWasUpdated;
 use App\Traits\RecordsActivity;
 use function foo\func;
@@ -84,24 +85,24 @@ class Thread extends Model
     }
 
     /**
-     * @param $reply
+     * @param  \App\Reply $reply
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function addReply($reply)
     {
-
-        $reply = $this->replies()->create($reply);
-
-        $this->subscriptions
-            ->where('user_id', '!=', $reply->user_id)
-            ->each->notify($reply);
-
         ////prepare notifications for all subscribers.
         //foreach ($this->subscriptions as $subscription) {
         //    if ($subscription->user_id != $reply->user_id) {
         //        $subscription->user->notify(new ThreadWasUpdated($this, $reply));
         //    }
         //}
+
+        $reply = $this->replies()->create($reply);
+
+        $this->notifySubscribers($reply);
+
+        //Way 2
+        //event(new ThreadHasNewReply($this, $reply));
 
         return $reply;
     }
@@ -153,5 +154,16 @@ class Thread extends Model
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()->where('user_id', auth()->id())->exists();
+    }
+
+    /**
+     * @param $reply
+     */
+    protected function notifySubscribers($reply): void
+    {
+        $this->subscriptions
+            ->where('user_id', '!=', $reply->user_id)
+            ->each
+            ->notify($reply);
     }
 }
