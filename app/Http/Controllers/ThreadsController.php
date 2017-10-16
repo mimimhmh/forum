@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Channel;
 use App\Filters\ThreadFilters;
 use App\Thread;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 /**
@@ -69,8 +70,7 @@ class ThreadsController extends Controller
             'body' => $data['body'],
         ]);
 
-        return redirect($thread->path())
-               ->with('flash', 'Thread published successfully!');
+        return redirect($thread->path())->with('flash', 'Thread published successfully!');
     }
 
     /**
@@ -82,6 +82,9 @@ class ThreadsController extends Controller
      */
     public function show(Channel $channel, Thread $thread)
     {
+        if (auth()->check()) {
+            auth()->user()->read($thread);
+        }
 
         return view('threads.show', compact('thread'));
     }

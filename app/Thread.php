@@ -2,30 +2,13 @@
 
 namespace App;
 
-use App\Events\ThreadHasNewReply;
-use App\Notifications\ThreadWasUpdated;
 use App\Traits\RecordsActivity;
-use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Thread
+ * Class Thread
  *
- * @property-read \App\User $creator
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reply[] $replies
- * @mixin \Eloquent
- * @property int $id
- * @property int $user_id
- * @property string $title
- * @property string $body
- * @property \Carbon\Carbon|null $created_at
- * @property \Carbon\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereBody($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Thread whereUserId($value)
+ * @package App
  */
 class Thread extends Model
 {
@@ -157,13 +140,23 @@ class Thread extends Model
     }
 
     /**
+     * Determine if the thread has been updated since the user last read it.
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function hasUpdatesFor($user)
+    {
+        $key = $user->visitedThreadCacheKey($this);
+
+        return $this->updated_at > cache($key);
+    }
+
+    /**
      * @param $reply
      */
     protected function notifySubscribers($reply): void
     {
-        $this->subscriptions
-            ->where('user_id', '!=', $reply->user_id)
-            ->each
-            ->notify($reply);
+        $this->subscriptions->where('user_id', '!=', $reply->user_id)->each->notify($reply);
     }
 }
