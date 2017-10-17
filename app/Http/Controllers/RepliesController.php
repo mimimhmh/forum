@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use App\Thread;
-use Illuminate\Http\Request;
+use App\Utilities\Spam;
 
 class RepliesController extends Controller
 {
@@ -38,24 +38,26 @@ class RepliesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Thread $thread
      * @param $channelId
-     * @return \Illuminate\Http\Response
+     * @param \App\Thread $thread
+     * @param \App\Utilities\Spam $spam
+     * @return $this|\Illuminate\Http\RedirectResponse
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, Spam $spam)
     {
         $this->validate(request(), ['body' => 'required']);
 
+        $spam->detect(request('body'));
+
         $reply = $thread->addReply([
             'body' => request('body'),
-            'user_id' => auth()->id()
+            'user_id' => auth()->id(),
         ]);
 
         if (request()->expectsJson()) {
             return $reply->load('owner');
         }
+
         return back()->with('flash', 'Your reply has been left.');
     }
 
@@ -71,7 +73,6 @@ class RepliesController extends Controller
         $this->validate(request(), ['body' => 'required']);
 
         $reply->update(request(['body']));
-
     }
 
     /**
