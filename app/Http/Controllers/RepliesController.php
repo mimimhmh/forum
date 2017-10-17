@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use App\Thread;
-use App\Utilities\Spam;
+use App\Inspections\Spam;
 
 class RepliesController extends Controller
 {
@@ -40,7 +40,7 @@ class RepliesController extends Controller
     /**
      * @param $channelId
      * @param \App\Thread $thread
-     * @param \App\Utilities\Spam $spam
+     * @param \App\Inspections\Spam $spam
      * @return $this|\Illuminate\Http\RedirectResponse
      */
     public function store($channelId, Thread $thread, Spam $spam)
