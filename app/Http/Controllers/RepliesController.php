@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Reply;
 use App\Thread;
-use App\Inspections\Spam;
 
 class RepliesController extends Controller
 {
@@ -40,39 +39,39 @@ class RepliesController extends Controller
     /**
      * @param $channelId
      * @param \App\Thread $thread
-     * @param \App\Inspections\Spam $spam
-     * @return $this|\Illuminate\Http\RedirectResponse
+     * @return $this
      */
-    public function store($channelId, Thread $thread, Spam $spam)
+    public function store($channelId, Thread $thread)
     {
-        $this->validate(request(), ['body' => 'required']);
+        try {
+            request()->validate(['body' => 'required|spamfree']);
 
-        $spam->detect(request('body'));
-
-        $reply = $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id(),
-        ]);
-
-        if (request()->expectsJson()) {
-            return $reply->load('owner');
+            $reply = $thread->addReply([
+                'body' => request('body'),
+                'user_id' => auth()->id(),
+            ]);
+        } catch (\Exception $e) {
+            return response('Sorry, your reply cannot saved at this time', 422);
         }
 
-        return back()->with('flash', 'Your reply has been left.');
+        return $reply->load('owner');
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Reply $reply
+     * @param \App\Reply $reply
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        $this->validate(request(), ['body' => 'required']);
+        try {
+            request()->validate(['body' => 'required|spamfree']);
 
-        $reply->update(request(['body']));
+            $reply->update(request(['body']));
+        } catch (\Exception $e) {
+            return response('Sorry, your reply cannot saved at this time', 422);
+        }
     }
 
     /**

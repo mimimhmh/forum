@@ -68,7 +68,7 @@ class Thread extends Model
     }
 
     /**
-     * @param  \App\Reply $reply
+     * @param  $reply
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function addReply($reply)

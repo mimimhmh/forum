@@ -5,7 +5,7 @@
                 <h5 class="flex">
                     <a :href="'/profiles/'+data.owner.name"
                        v-text="data.owner.name">
-                        </a> said <span v-text="ago"></span>
+                    </a> said <span v-text="ago"></span>
                 </h5>
 
                 <div v-if="signedIn">
@@ -41,7 +41,7 @@
     export default {
         props: ['data'],
 
-        components: { Favorite },
+        components: {Favorite},
 
         data() {
             return {
@@ -69,11 +69,12 @@
             update() {
                 axios.patch('/replies/' + this.data.id, {
                     body: this.body
+                }).catch(error => {
+                    flash(error.response.data, 'danger');
+                }).then(function () {
+                    this.editing = false;
+                    flash('Updated!');
                 });
-
-                this.editing = false;
-
-                flash('Updated!');
             },
 
             destroy() {
