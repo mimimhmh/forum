@@ -2,9 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePostRequest;
 use App\Reply;
 use App\Thread;
 
+/**
+ * Class RepliesController
+ *
+ * @package App\Http\Controllers
+ */
 class RepliesController extends Controller
 {
     /**
@@ -12,7 +18,6 @@ class RepliesController extends Controller
      */
     function __construct()
     {
-
         $this->middleware('auth')->except(['index', 'show']);
     }
 
@@ -39,29 +44,16 @@ class RepliesController extends Controller
     /**
      * @param $channelId
      * @param \App\Thread $thread
-     * @return $this
+     * @param \App\Http\Requests\CreatePostRequest $form
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
 
-        if (\Gate::denies('create', new Reply)) {
-            return response(
-                'You are posting too frequently. Please take a break. :)',
-                429
-            );
-        }
-        try {
-            request()->validate(['body' => 'required|spamfree']);
-
-            $reply = $thread->addReply([
-                'body' => request('body'),
-                'user_id' => auth()->id(),
-            ]);
-        } catch (\Exception $e) {
-            return response('Sorry, your reply cannot saved at this time', 422);
-        }
-
-        return $reply->load('owner');
+        return $thread->addReply([
+            'body' => request('body'),
+            'user_id' => auth()->id(),
+        ])->load('owner');
     }
 
     /**

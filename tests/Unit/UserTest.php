@@ -13,7 +13,7 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     /**
-     *
+     * @test
      */
     public function a_user_can_fetch_their_recent_reply()
     {

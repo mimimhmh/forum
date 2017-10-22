@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Exceptions\ThrottleException;
 use App\Reply;
 use App\Thread;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,7 +53,7 @@ class ParticipateInForumTest extends TestCase
 
         $reply = make(Reply::class, ['body' => null]);
 
-        $this->post($thread->path().'/replies', $reply->toArray())->assertStatus(422);
+        $this->json('post', $thread->path().'/replies', $reply->toArray())->assertStatus(422);
     }
 
     /**
@@ -109,6 +110,8 @@ class ParticipateInForumTest extends TestCase
      */
     public function replies_that_contain_spam_may_not_be_created()
     {
+        $this->withExceptionHandling();
+
         $this->signIn();
 
         $thread = create(Thread::class);
@@ -117,7 +120,7 @@ class ParticipateInForumTest extends TestCase
             'body' => 'Yahoo Customer Support',
         ]);
 
-        $this->post($thread->path().'/replies', $reply->toArray())->assertStatus(422);
+        $this->json('post', $thread->path().'/replies', $reply->toArray())->assertStatus(422);
     }
 
     /**
@@ -125,13 +128,13 @@ class ParticipateInForumTest extends TestCase
      */
     public function users_may_only_reply_a_maximum_of_once_per_minute()
     {
+        $this->withExceptionHandling();
+
         $this->signIn();
 
         $thread = create(Thread::class);
 
-        $reply = make(Reply::class, [
-            'body' => 'simple reply',
-        ]);
+        $reply = make(Reply::class);
 
         $this->post($thread->path().'/replies', $reply->toArray())->assertStatus(200);
 
