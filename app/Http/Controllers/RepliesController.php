@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreatePostRequest;
+use App\Notifications\YouWereMentioned;
 use App\Reply;
 use App\Thread;
+use App\User;
 
 /**
  * Class RepliesController
@@ -49,7 +51,6 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostRequest $form)
     {
-
         return $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id(),
