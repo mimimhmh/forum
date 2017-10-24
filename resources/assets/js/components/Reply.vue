@@ -16,20 +16,24 @@
 
         <div class="panel-body">
             <div v-if="editing">
-                <div class="form-group">
-                    <textarea class="form-control" v-model="body"></textarea>
-                </div>
+                <form  @submit.prevent="update">
+                    <div class="form-group">
+                        <textarea class="form-control" v-model="body" required></textarea>
+                    </div>
 
-                <button class="btn btn-xs btn-primary" @click="update">Update</button>
-                <button class="btn btn-xs btn-link" @click="editing = false">Cancel</button>
+                    <button class="btn btn-xs btn-primary">Update</button>
+                    <button class="btn btn-xs btn-link" @click="cancelReply" type="button">Cancel</button>
+                </form>
             </div>
 
             <div v-else v-text="body"></div>
         </div>
 
-        <div class="panel-footer level" v-if="canUpdate">
-            <button class="btn btn-xs mr-1" @click="editing = true">Edit</button>
-            <button class="btn btn-xs btn-danger mr-1" @click="destroy">Delete</button>
+        <div v-show="edit_div">
+            <div class="panel-footer level" v-if="canUpdate">
+                <button class="btn btn-xs mr-1" @click="editReply">Edit</button>
+                <button class="btn btn-xs btn-danger mr-1" @click="destroy">Delete</button>
+            </div>
         </div>
     </div>
 </template>
@@ -45,9 +49,11 @@
 
         data() {
             return {
+                edit_div: true,
                 editing: false,
                 id: this.data.id,
-                body: this.data.body
+                body: this.data.body,
+                old_body_data: this.data.body
             };
         },
 
@@ -67,14 +73,33 @@
 
         methods: {
             update() {
-                axios.patch('/replies/' + this.data.id, {
-                    body: this.body
-                }).catch(error => {
+                axios.patch(
+                    '/replies/' + this.data.id, {
+                        body: this.body
+                })
+                .catch(error => {
                     flash(error.response.data, 'danger');
-                }).then(function () {
-                    this.editing = false;
-                    flash('Updated!');
                 });
+
+                this.editing = false;
+
+                this.edit_div = true;
+
+                flash('Updated!');
+
+            },
+
+            editReply(){
+                this.edit_div = false;
+                this.old_body_data = this.body;
+                this.editing = true;
+            },
+
+            cancelReply(){
+                this.edit_div = true;
+                this.body = this.old_body_data;
+                this.old_body_data = '';
+                this.editing = false;
             },
 
             destroy() {

@@ -59,19 +59,17 @@ class RepliesController extends Controller
 
     /**
      * @param \App\Reply $reply
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
 
-        try {
-            request()->validate(['body' => 'required|spamfree']);
+        request()->validate(['body' => 'required|spamfree']);
 
-            $reply->update(request(['body']));
-        } catch (\Exception $e) {
-            return response('Sorry, your reply cannot saved at this time', 422);
-        }
+        //5.4
+        //$this->validate(request(), ['body' => 'required|spamfree']);
+
+        $reply->update(request(['body']));
     }
 
     /**

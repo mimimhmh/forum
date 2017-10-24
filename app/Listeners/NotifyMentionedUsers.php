@@ -34,5 +34,11 @@ class NotifyMentionedUsers
                 $user->notify(new YouWereMentioned($event->reply));
             }
         }
+
+        //User::whereIn('name', $event->reply->mentionedUsers())
+        //    ->get()
+        //    ->each(function ($user) use ($event) {
+        //          $user->notify(new YouWereMentioned($event->reply));
+        //    });
     }
 }
