@@ -85,11 +85,6 @@ class Thread extends Model
 
         event(new ThreadReceivedNewReply($reply));
 
-        $this->notifySubscribers($reply);
-
-        //Way 2
-        //event(new ThreadHasNewReply($this, $reply));
-
         return $reply;
     }
 
@@ -155,11 +150,4 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
-    /**
-     * @param $reply
-     */
-    protected function notifySubscribers($reply): void
-    {
-        $this->subscriptions->where('user_id', '!=', $reply->user_id)->each->notify($reply);
-    }
 }
