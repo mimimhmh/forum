@@ -9,7 +9,7 @@
     </div>
 
     <div class="panel-body">
-        {{ $body }}
+        {!! html_entity_decode($body) !!}
     </div>
 </div>
 
