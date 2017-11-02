@@ -39,6 +39,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar_path',
     ];
 
     /**
@@ -103,5 +104,16 @@ class User extends Authenticatable
     public function visitedThreadCacheKey(Thread $thread)
     {
         return sprintf("users.%s.visits.%s", auth()->id(), $thread->id);
+    }
+
+    /**
+     * Get the path to the user's avatar.
+     *
+     * @param $avatar
+     * @return string
+     */
+    public function getAvatarPathAttribute($avatar)
+    {
+        return asset('storage/'.$avatar ?: 'images/avatars/default.png');
     }
 }
