@@ -103,6 +103,7 @@ class ThreadsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Thread $thread
+     * @return \Illuminate\Http\Response
      */
     public function edit(Thread $thread)
     {
@@ -110,8 +111,11 @@ class ThreadsController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Thread $thread
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Thread $thread
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Thread $thread)
     {
@@ -119,11 +123,11 @@ class ThreadsController extends Controller
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Thread $thread
      * @param \App\Channel $channel
-     * @param \App\Thread $thread
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
-     * @throws \Exception
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Channel $channel, Thread $thread)
     {
