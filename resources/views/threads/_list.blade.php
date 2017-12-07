@@ -32,7 +32,9 @@
             <div class="body">
                 {{ $thread->body }}
             </div>
-            <hr>
+        </div>
+        <div class="panel-footer">
+            {{ $thread->visits }} {{ str_plural('Visit', $thread->visits) }}
         </div>
     </div>
 @empty

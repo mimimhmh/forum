@@ -17,7 +17,7 @@ Route::get('threads/search', 'SearchController@show');
 Route::get('threads/{channel}/{thread}', 'ThreadsController@show')->name('threads.show');
 Route::patch('threads/{channel}/{thread}', 'ThreadsController@update');
 Route::delete('threads/{channel}/{thread}', 'ThreadsController@destroy');
-Route::post('threads', 'ThreadsController@store')->middleware('must-be-confirmed');
+Route::post('threads', 'ThreadsController@store');
 Route::get('threads/{channel?}', 'ThreadsController@index')->name('threads.index');
 
 Route::get('/threads/{channel}/{thread}/replies', 'RepliesController@index');

@@ -138,10 +138,9 @@ class Thread extends Model
     }
 
     /**
-     * Determine if the thread has been updated since the user last read it.
-     *
-     * @param User $user
+     * @param $user
      * @return bool
+     * @throws \Exception
      */
     public function hasUpdatesFor($user)
     {
