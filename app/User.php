@@ -54,6 +54,13 @@ class User extends Authenticatable
     ];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'confirmed' => 'boolean',
+    ];
+
+    /**
      * @return string
      */
     public function getRouteKeyName()
@@ -89,10 +96,23 @@ class User extends Authenticatable
      * Record that the user has read the given thread.
      *
      * @param \App\Thread $thread
+     * @throws \Exception
      */
     public function read(Thread $thread)
     {
         cache()->forever($this->visitedThreadCacheKey($thread), Carbon::now());
+    }
+
+    /**
+     * Mark the user's account as confirmed.
+     */
+    public function confirm()
+    {
+        $this->confirmed = true;
+
+        $this->confirmation_token = null;
+
+        $this->save();
     }
 
     /**

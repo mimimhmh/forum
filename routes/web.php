@@ -36,6 +36,8 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
 
+Route::get('/register/confirm', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
+
 Route::get('api/users', 'Api\UsersController@index');
 Route::post('api/users/{user}/avatar', 'Api\AvatarController@store')->name('avatar');
 
