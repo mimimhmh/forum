@@ -51,6 +51,8 @@ $factory->define(App\Reply::class, function (Faker $faker) {
 
 $factory->define(App\Thread::class, function (Faker $faker) {
 
+    $title = $faker->sentence();
+
     return [
         'user_id' => function () {
 
@@ -61,9 +63,10 @@ $factory->define(App\Thread::class, function (Faker $faker) {
             return factory(Channel::class)->create()->id;
         },
 
-        'title' => $faker->sentence(),
+        'title' => $title,
         'body' => $faker->paragraph(),
         'visits' => 0,
+        'slug' => str_slug($title),
     ];
 });
 
