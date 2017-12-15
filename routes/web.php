@@ -32,6 +32,8 @@ Route::post('/replies/{reply}/favorites', 'FavoritesController@store');
 Route::delete('/replies/{reply}/favorites', 'FavoritesController@destroy');
 Route::get('/replies/{reply}/favorites', 'FavoritesController@loginRedirect');
 
+Route::post('/replies/{reply}/best', 'BestRepliesController@store')->name('best-replies.store');
+
 Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
 Route::get('/profiles/{user}/notifications', 'UserNotificationsController@index');
 Route::delete('/profiles/{user}/notifications/{notification}', 'UserNotificationsController@destroy');
