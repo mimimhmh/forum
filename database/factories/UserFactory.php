@@ -30,7 +30,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 
 $factory->state(App\User::class, 'unconfirmed', function () {
     return [
-        'confirmed' => false
+        'confirmed' => false,
     ];
 });
 
@@ -67,6 +67,7 @@ $factory->define(App\Thread::class, function (Faker $faker) {
         'body' => $faker->paragraph(),
         'visits' => 0,
         'slug' => str_slug($title),
+        'locked' => false,
     ];
 });
 

@@ -160,6 +160,15 @@ class ThreadsTest extends TestCase
         auth()->user()->read($thread);
 
         $this->assertFalse($thread->hasUpdatesFor(auth()->user()));
+    }
 
+    /** @test */
+    function a_thread_may_be_locked()
+    {
+        $this->assertFalse($this->thread->locked);
+
+        $this->thread->lock();
+
+        $this->assertTrue($this->thread->locked);
     }
 }
