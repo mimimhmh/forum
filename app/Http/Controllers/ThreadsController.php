@@ -58,7 +58,7 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param  \App\Rules\Recaptcha  $recaptcha
+     * @param  \App\Rules\Recaptcha $recaptcha
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, Recaptcha $recaptcha)
@@ -117,14 +117,21 @@ class ThreadsController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
+     * @param $channel
      * @param \App\Thread $thread
+     * @return \App\Thread
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request, Thread $thread)
+    public function update($channel, Thread $thread)
     {
-        //
+        $this->authorize('update', $thread);
+
+        $thread->update(request()->validate([
+            'title' => 'required|spamfree',
+            'body' => 'required|spamfree',
+        ]));
+
+        return $thread;
     }
 
     /**

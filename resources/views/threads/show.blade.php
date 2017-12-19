@@ -6,38 +6,12 @@
 
 
 @section('content')
-    <thread-view :thread="{{ $thread }}" inline-template>
+    <thread-view :thread="{{ $thread }}" inline-template v-cloak>
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="level">
-                                <img src="{{ asset($thread->creator->avatar_path) }}"
-                                     alt="{{ $thread->creator->name }}"
-                                     width="25"
-                                     height="25"
-                                     class="mr-1">
-                                <span class="flex">
-                                    <a href="{{ route('profiles', $thread->creator) }}">{{ $thread->creator->name }}</a> posted:
-                                    {{ $thread->title }}
-                                </span>
+                <div class="col-md-8" >
 
-                                @can ('update', $thread)
-                                    <form action="{{ $thread->path() }}" method="POST">
-                                        {{ csrf_field() }}
-                                        {{ method_field('DELETE') }}
-
-                                        <button type="submit" class="btn btn-link">Delete Thread</button>
-                                    </form>
-                                @endcan
-                            </div>
-                        </div>
-
-                        <div class="panel-body">
-                            {{ $thread->body }}
-                        </div>
-                    </div>
+                    @include('threads._topic')
 
                     <replies @added="repliesCount++"
                              @removed="repliesCount--">

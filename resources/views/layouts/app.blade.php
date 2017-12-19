@@ -32,6 +32,10 @@
             align-items: center;
         }
 
+        .level-item {
+            margin-right: 1em;
+        }
+
         .flex {
             flex: 1;
         }
@@ -44,7 +48,9 @@
             margin-left: auto;
         }
 
-        [v-cloak] { display: none; }
+        [v-cloak] {
+            display: none;
+        }
     </style>
     @yield('head')
 </head>
