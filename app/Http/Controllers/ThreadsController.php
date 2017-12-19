@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Filters\ThreadFilters;
+use App\Rules\Recaptcha;
 use App\Thread;
 use App\Trending;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 /**
  * Class ThreadsController
@@ -58,14 +58,16 @@ class ThreadsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
+     * @param  \App\Rules\Recaptcha  $recaptcha
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(Request $request, Recaptcha $recaptcha)
     {
         $data = $request->validate([
             'title' => 'required|spamfree',
             'body' => 'required|spamfree',
             'channel_id' => 'required|exists:channels,id',
+            'g-recaptcha-response' => ['required', $recaptcha],
         ]);
 
         $thread = Thread::create([
@@ -107,7 +109,7 @@ class ThreadsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Thread $thread
-     * @return \Illuminate\Http\Response
+     *
      */
     public function edit(Thread $thread)
     {
@@ -117,9 +119,8 @@ class ThreadsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Thread $thread
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Thread $thread
      */
     public function update(Request $request, Thread $thread)
     {
@@ -129,9 +130,11 @@ class ThreadsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Thread $thread
      * @param \App\Channel $channel
-     * @return \Illuminate\Http\Response
+     * @param \App\Thread $thread
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy(Channel $channel, Thread $thread)
     {
