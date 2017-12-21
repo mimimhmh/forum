@@ -10,6 +10,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //Route::resource('threads', 'ThreadsController', ['except' => ['index', 'show']]);
+Route::view('scan', 'scan');
 
 Route::get('threads', 'ThreadsController@index')->name('threads');
 Route::get('threads/create', 'ThreadsController@create');

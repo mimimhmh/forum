@@ -5,6 +5,7 @@ namespace App;
 use App\Events\ThreadReceivedNewReply;
 use App\Traits\RecordsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 /**
  * Class Thread
@@ -13,11 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Thread extends Model
 {
-    use RecordsActivity;
+    use RecordsActivity, Searchable;
 
     protected $guarded = [];
 
-    protected $with = ['creator'];
+    protected $with = ['creator', 'channel'];
 
     protected $append = ['isSubscribedTo'];
 
@@ -190,4 +191,11 @@ class Thread extends Model
         $this->update(['best_reply_id' => $reply->id]);
     }
 
+    /**
+     * @return array
+     */
+    public function toSearchableArray()
+    {
+        return $this->toArray() + ['path' => $this->path()];
+    }
 }
