@@ -2,13 +2,7 @@
     <div>
         <div v-if="signedIn">
             <div class="form-group">
-                <textarea name="body"
-                          id="body"
-                          class="form-control"
-                          placeholder="Have something to say?"
-                          rows="5"
-                          required
-                          v-model="body"></textarea>
+                <wysiwyg name="body" v-model="body" placeholder="Some thing to say?" ref="trix"></wysiwyg>
             </div>
 
             <button class="btn btn-default" @click="addReply">Post</button>
@@ -55,6 +49,8 @@
                     })
                     .then(({data}) => {
                         this.body = '';
+
+                        this.$refs.trix.$refs.trix.value = '';
 
                         flash('Your reply has been posted.');
 
