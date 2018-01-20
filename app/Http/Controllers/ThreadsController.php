@@ -74,7 +74,7 @@ class ThreadsController extends Controller
             'user_id' => auth()->id(),
             'channel_id' => $data['channel_id'],
             'title' => $data['title'],
-            'body' => $data['body'],
+            'body' => \Purify::clean($data['body']),
         ]);
 
         if (request()->wantsJson()) {

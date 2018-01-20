@@ -1,7 +1,7 @@
 <?php
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.5.23 on 2017-12-08.
+ * Generated for Laravel 5.5.23 on 2018-01-18.
  *
  * @author Barry vd. Heuvel <barryvdh@gmail.com>
  * @see https://github.com/barryvdh/laravel-ide-helper
@@ -12323,6 +12323,172 @@ namespace Illuminate\Support\Facades {
  
 }
 
+namespace Germey\Geetest { 
+
+    class Geetest {
+        
+        /**
+         * 
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getGeetestUrl()
+        {
+            return \Germey\Geetest\GeetestLib::getGeetestUrl();
+        }
+        
+        /**
+         * 
+         *
+         * @param string $geetestUrl
+         * @static 
+         */ 
+        public static function setGeetestUrl($url)
+        {
+            return \Germey\Geetest\GeetestLib::setGeetestUrl($url);
+        }
+        
+        /**
+         * Check Geetest server is running or not.
+         *
+         * @param null $user_id
+         * @return int 
+         * @static 
+         */ 
+        public static function preProcess($param, $new_captcha = 1)
+        {
+            return \Germey\Geetest\GeetestLib::preProcess($param, $new_captcha);
+        }
+        
+        /**
+         * 
+         *
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getResponseStr()
+        {
+            return \Germey\Geetest\GeetestLib::getResponseStr();
+        }
+        
+        /**
+         * 
+         *
+         * @return mixed 
+         * @static 
+         */ 
+        public static function getResponse()
+        {
+            return \Germey\Geetest\GeetestLib::getResponse();
+        }
+        
+        /**
+         * Get success validate result.
+         *
+         * @param $challenge
+         * @param $validate
+         * @param $seccode
+         * @param null $user_id
+         * @return int 
+         * @static 
+         */ 
+        public static function successValidate($challenge, $validate, $seccode, $param, $json_format = 1)
+        {
+            return \Germey\Geetest\GeetestLib::successValidate($challenge, $validate, $seccode, $param, $json_format);
+        }
+        
+        /**
+         * Get fail result.
+         *
+         * @param $challenge
+         * @param $validate
+         * @param $seccode
+         * @return int 
+         * @static 
+         */ 
+        public static function failValidate($challenge, $validate, $seccode)
+        {
+            return \Germey\Geetest\GeetestLib::failValidate($challenge, $validate, $seccode);
+        }
+        
+        /**
+         * 
+         *
+         * @param string $product
+         * @static 
+         */ 
+        public static function render($product = 'float')
+        {
+            return \Germey\Geetest\GeetestLib::render($product);
+        }
+         
+    }
+ 
+}
+
+namespace Stevebauman\Purify\Facades { 
+
+    class Purify {
+        
+        /**
+         * Cleans the specified input.
+         * 
+         * If a configuration array is given, it **will not**
+         * merge your current configuration.
+         *
+         * @param array|string $input
+         * @param array|null $config
+         * @return array|string 
+         * @static 
+         */ 
+        public static function clean($input, $config = null)
+        {
+            return \Stevebauman\Purify\Purify::clean($input, $config);
+        }
+        
+        /**
+         * Sets the current purifier to
+         * the specified purifier object.
+         *
+         * @param \HTMLPurifier $purifier
+         * @return $this 
+         * @static 
+         */ 
+        public static function setPurifier($purifier)
+        {
+            return \Stevebauman\Purify\Purify::setPurifier($purifier);
+        }
+        
+        /**
+         * Returns the HTML purifier object.
+         *
+         * @return \HTMLPurifier 
+         * @static 
+         */ 
+        public static function getPurifier()
+        {
+            return \Stevebauman\Purify\Purify::getPurifier();
+        }
+        
+        /**
+         * Returns the configuration settings for HTML Purifier.
+         * 
+         * If no configuration settings are retrieved, a default
+         * configuration schema is returned.
+         *
+         * @return array 
+         * @static 
+         */ 
+        public static function getSettings()
+        {
+            return \Stevebauman\Purify\Purify::getSettings();
+        }
+         
+    }
+ 
+}
+
 namespace Barryvdh\Debugbar { 
 
     class Facade {
@@ -14985,6 +15151,10 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Geetest extends \Germey\Geetest\Geetest {}
+
+    class Purify extends \Stevebauman\Purify\Facades\Purify {}
 
     class Debugbar extends \Barryvdh\Debugbar\Facade {}
  

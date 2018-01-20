@@ -43,7 +43,8 @@ class ReplyTest extends TestCase
     public function it_can_detect_all_mentioned_users_in_the_body()
     {
         $reply = create(Reply::class, [
-            'body' => '@JaneDoe wants to talk to @JohnDoe.']);
+            'body' => '@JaneDoe wants to talk to @JohnDoe.',
+        ]);
 
         $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
     }
@@ -51,14 +52,14 @@ class ReplyTest extends TestCase
     /**
      * @test
      */
-    public function it_wraps_mentioned_usernames_in_the_body_within_anchor_tags(){
+    public function it_wraps_mentioned_usernames_in_the_body_within_anchor_tags()
+    {
 
         $reply = create(Reply::class, [
-            'body' => 'Hello @JohnDoe.']);
+            'body' => 'Hello @JohnDoe.',
+        ]);
 
-        $this->assertEquals(
-            'Hello <a href="/profiles/JohnDoe">@JohnDoe</a>.',
-            $reply->body);
+        $this->assertEquals('Hello <a href="/profiles/JohnDoe">@JohnDoe</a>.', $reply->body);
     }
 
     /**
@@ -73,5 +74,13 @@ class ReplyTest extends TestCase
         $reply->thread->update(['best_reply_id' => $reply->id]);
 
         $this->assertTrue($reply->fresh()->isBest());
+    }
+
+    /** @test */
+    function a_reply_body_is_sanitized_automatically()
+    {
+        $reply = make('App\Reply', ['body' => '<script>alert("bad")</script><p>This is okay.</p>']);
+
+        $this->assertEquals("<p>This is okay.</p>", $reply->body);
     }
 }

@@ -181,6 +181,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Germey\Geetest\GeetestServiceProvider::class,
+        Stevebauman\Purify\PurifyServiceProvider::class,
 
     ],
 
@@ -231,7 +232,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Geetest' => Germey\Geetest\Geetest::class,
-
+        'Purify' => 'Stevebauman\Purify\Facades\Purify',
     ],
 
 ];
